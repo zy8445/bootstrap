@@ -1,0 +1,172 @@
+var MonthDNum=new Array(0,31,28,31,30,31,30,31,31,30,31,30,31);
+var MonthText=new Array("","1","2","3","4","5","6","7","8","9","10","11","12");
+var Calendar_obj,Calendar_obj2;
+//var WriteHead=1;
+
+document.write('<iframe style="position:absolute;width:225px;display:none;" name="divCalendar" id="divCalendar" frameborder="0" scrolling="no"></iframe>')
+
+/*头部信息CSS及JS函数*/
+var HeadMsg='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'+
+'<html xmlns="http://www.w3.org/1999/xhtml">'+
+'<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><style type="text/css"><!--'+
+'body,html{margin:0px;height:100%;}a,li,input {font-family:"Verdana","Arial";font-size:11px;}'+
+'a {color:#000;text-decoration:none;}'+
+'ul{list-style:none;margin:0px;padding:0px;overflow:hidden;}'+
+'ul li{float:left;display:inline;text-align:center;height:20px;}'+
+'#Tools {width:223px;padding:3px 0 0 0;border:solid 1px #ccc;border-bottom:none;background:#eee;}'+
+'#Title {width:225px;background:#e7e7e8 url(../initmi/images/eeGrad.gif);}'+
+'#Title li{height:12px;padding-top:2px;width:30px;border-right:solid 1px #cccccc;border-bottom:solid 1px #cccccc;border-left:solid 1px #eee;}'+
+'.gradDate{width:224px;}'+
+'.gradDate li{width:30px;height:30px;border-right:solid 1px #ccc;border-bottom:solid 1px #ccc;border-left:solid 1px #fff;background: #fff;}'+
+'.gradDate a, .gradDate a:link{padding-top:2px;height:28px;display:block;color:#000;text-decoration:none;display:block;}'+
+'.gradDate a:hover{color:#fff;background:#006699;display:block;}'+
+'.weekend{color:#f00;background:#eee;}'+
+'#sYear,#sMonth {text-align:right;margin-left:5px;cursor:pointer;}'+
+'#Select {width:50px;border:1px solid #ccc;background:#fff;height:150px;}'+
+'#Select a{padding:2px 0;display:block;text-align:center;}'+
+'#Select a:hover{color:#000;background:#eee;border:0;}'+
+'#Select #SelectBn {background:#eee;font-size:8px;line-height:7px;height:7px;text-align:center;color:#000;}'+
+'#Select #SelectBn:hover{background:#e1e1e1;color:#000;}#SArr,#sYear,#sMonth{float:left;}'+
+'#SelectYear,#SelectMonth{position:absolute;top:20px;z-index:1;overflow:hidden;display:none;}'+
+'--></style><scr'+
+'ipt language="JavaScript">var mdown,sy,ey,sm,em,HideSelect=1,CurrentSelect,year,month,day;function Scroll(str,key)'+
+'{var Html="",s,e,obj,d;'+
+'if(key=="Y"){s=sy;e=ey;obj="SelectYearItem";d="";}if(key=="M"){s=sm;e=em;obj="SelectMonthItem";d="";}'+
+'if(str=="Up"){s--;e--;}if(str=="Next"){s++;e++;}'+
+'if(key=="Y"){sy=s;ey=e;}if(key=="M"){if(s<1)s=1;if(s>6)s=6;if(e<7)e=7;if(e>12)e=12;sm=s;em=e;}'+
+'for(i=s;i<=e;i++){Html+=\'<a href="javascript:;" onclick="parent.Calendar_Modif(\';Html+=(key=="M")?year+\',\'+i+\',\'+day+\');">\'+parent.MonthText[i]:i+\',\'+month+\',\'+day+\');">\'+i;Html+=d+"</a>";}'+
+'document.getElementById(obj).innerHTML=Html;}'+
+'function KeyDown(str){if(str==38){Scroll("Up",CurrentSelect);}if(str==40){Scroll("Next",CurrentSelect);}}'+
+'function ShowSelect(str,str2){HideSelect=0;HSelect();Scroll(\'\',str2);document.getElementById(str).style.display="block";CurrentSelect=str2}'+
+'function HSelect(){document.getElementById("SelectYear").style.display="none";document.getElementById("SelectMonth").style.display="none";}'+
+'function Calendar_GetDate(y,m,d)'+
+'{var objEvent=window.event||arguments.callee.caller.arguments[0];'+
+'var srcElement=objEvent.srcElement;'+
+'if(!srcElement){srcElement=objEvent.target;}'+
+'if(srcElement.tagName=="A"){parent.Calendar_GetDate(y,m,srcElement.innerHTML);}}'+
+'document.onclick=function(){if(HideSelect){HSelect();}HideSelect=1;}</scr'+
+'ipt><body onkeydown="KeyDown(event.keyCode);">'+
+'<div id="SelectYear" style="left:25px;" onclick="ShowSelect(\'SelectYear\',\'Y\');"><div id="Select"><a href="javascript:;" onmousedown="mdown=window.setInterval(\'Scroll(\\\'Up\\\',\\\'Y\\\')\',50);" onmouseup="window.clearInterval(mdown);" onmouseout="window.clearInterval(mdown);" id="SelectBn" style="border-bottom:1px solid #ccc;"><font face="Webdings">5</font></a><div id="SelectYearItem">'+
+'</div><a href="javascript:;" onmousedown="mdown=window.setInterval(\'Scroll(\\\'Next\\\',\\\'Y\\\')\',50);" onmouseup="window.clearInterval(mdown);" onmouseout="window.clearInterval(mdown);" id="SelectBn" style="border-top:1px solid #ccc;"><font face="Webdings">6</font></a></div></div>'+
+'<div id="SelectMonth" style="left:70px;" onclick="ShowSelect(\'SelectMonth\',\'M\');"><div id="Select"><a href="javascript:;" onmousedown="mdown=window.setInterval(\'Scroll(\\\'Up\\\',\\\'M\\\')\',50);" onmouseup="window.clearInterval(mdown);" onmouseout="window.clearInterval(mdown);" id="SelectBn" style="border-bottom:1px solid #ccc;"><font face="Webdings">5</font></a><div id="SelectMonthItem">'+
+'</div><a href="javascript:;" onmousedown="mdown=window.setInterval(\'Scroll(\\\'Next\\\',\\\'M\\\')\',50);" onmouseup="window.clearInterval(mdown);" onmouseout="window.clearInterval(mdown);" id="SelectBn" style="border-top:1px solid #ccc;"><font face="Webdings">6</font></a></div></div>';
+
+
+function Calendar_Show(year,month,day){
+ var content; 
+ var date=new Date();
+ 
+ var DayNum=(IsLeapYear(year) && month==2)?MonthDNum[month]+1:MonthDNum[month];
+ var date2=new Date(year,month-1,1)
+ var start=date2.getDay();
+ var date2=null;
+ var Trn=Math.ceil((DayNum+start)/7);
+ 
+ var PrNum=1;
+ 
+ content='<scr'+
+ 'ipt language="JavaScript">year='+year+',month='+month+',day='+day+',sy=year-3;ey=year+3;'+
+ 'sm=(month-3<1)?1:(+month-3>6)?6:month-3;'+
+ 'em=(month+3<7)?7:(month+3>12)?12:month+3;</scr'+
+ 'ipt><div style="width:225px;height:'+(47+30*Trn)+'px;">';
+ 
+  content+='<div id="Tools"><ul>'+
+ '<li style="float:right;width:22px;"><a href="javascript:parent.Calendar_hide();"><img src="../initmi/images/close.gif" border="0" /></a></li>'+
+ '<li style="padding-left:3px;"><a href="javascript:parent.Calendar_Modif('+year+','+(month-1)+','+day+')";><img src="../initmi/images/left.gif" border="0" /></a></li>';
+ 
+  content+='<li id="SelectArea"><div id="sYear" onclick="ShowSelect(\'SelectYear\',\'Y\');">'+year+'<font face="Webdings">6</font></div>'+
+ '<div id="sMonth" onclick="ShowSelect(\'SelectMonth\',\'M\');">'+MonthText[month]+'<font face="Webdings">6</font></div></li>';
+
+ content+='<li style="padding-left:8px;"><a href="javascript:parent.Calendar_Modif('+year+','+(month+1)+','+day+');"><img src="../initmi/images/right.gif" border="0" /></a></li>'+
+ '<li style="padding:2px 0 0 15px;"><a href="javascript:parent.Calendar_GetDate('+date.getFullYear()+','+(date.getMonth()+1)+','+date.getDate()+');">'+date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+'</a></li></ul></div>'+
+ '<div style="border-left:solid 1px #cccccc;border-top:solid 1px #cccccc;"><div id="Title"><ul><li style="color:#F00;">S</li><li>M</li><li>T</li><li>W</li><li>T</li><li>F</li><li style="color:#F00;">S</li></ul></div>'+
+ '<ul onclick="javascript:Calendar_GetDate('+year+','+month+',-1);" class="gradDate">';
+ 
+ var date=null;
+ 
+ if(start>0){content+='<li style="width:'+(start*32-2)+'px;"></li>';}
+ for(i=1;i<=DayNum;i++){
+  content+='<li><a href="#"'
+  content+=(day==PrNum)?' style="background: #006699;color:#fff;"':'';
+  content+=((i+start)%7<2)?' class="weekend"':'';
+  content+='>'+PrNum+'</a></li>';
+  PrNum++;
+ }
+ if((start+DayNum)>35){content+='<li style="width:'+((42-start-DayNum)*32-2)+'px;"></li>';}
+ else if((start+DayNum)<35 && (start+DayNum)>28){content+='<li style="width:'+((35-start-DayNum)*32-2)+'px;"></li>';}
+ content+='</ul></div></div>';
+
+//层定位
+ var Calendar=document.getElementById('divCalendar');
+ 
+ Calendar.style.height=48+30*Trn+'px';  //框架高度
+
+ divCalendar.document.open()
+ divCalendar.document.write(HeadMsg+content);
+ divCalendar.document.close()
+ 
+ var p=Calendar_obj;
+ var eT=0,eL=0,eH=0,dH=0,sT=0,eP=p
+ while(p && p.tagName!="BODY"){
+ eT+=p.offsetTop;//距窗口顶部距离
+ eL+=p.offsetLeft;//距窗口左边距离
+ p=p.offsetParent;}
+ var eH=eP.offsetHeight;//输入框高度 
+ var eW=eP.offsetWidth;//输入框宽度 
+ var dH=Calendar.style.pixelHeight;//框架高度
+ 
+ Calendar.style.top=(eT+dH>document.body.scrollHeight && eT-dH>=0)?eT-dH+'px':eT+eH+'px';
+ Calendar.style.left=(eL+225>document.body.scrollWidth && eL-225+eW>=0)?eL-225+eW+'px':eL+'px';
+ setTimeout("document.getElementById('divCalendar').style.display=''",1);
+}
+
+/*是否润年*/
+function IsLeapYear(y){
+if(0==y%4 && ((y%100!=0)||(y%400==0))){return true;}
+else{return false;}
+}
+
+function Calendar_Modif(y,m,d){
+ if(m<1){m=12;y=y-1;}
+ if(m>12){m=1;y=y+1;}
+ var num=(IsLeapYear(y) && m==2)?MonthDNum[m]+1:MonthDNum[m];
+ if(d>num){d=num;}
+ Calendar_Show(y,m,d)
+}
+
+function Calendar(obj,obj2){
+ var p=Calendar_obj=document.getElementById(obj);
+ Calendar_obj2=document.getElementById(obj2);
+
+ var re=/\d{4}-\d{1,2}-\d{1,2}/;
+ var arr,Sdate;
+ arr=re.exec(Calendar_obj.value);
+ if(arr!=null){Sdate=Calendar_obj.value;}
+ else{var mydate=new Date();
+ Sdate=mydate.getFullYear()+'-'+(mydate.getMonth()+1)+'-'+mydate.getDate();}
+ 
+ Sdate=Sdate.split("-");
+ Calendar_Show(parseInt(Sdate[0]),parseInt(Sdate[1]),parseInt(Sdate[2]));
+}
+
+function Calendar_GetDate(y,m,d){
+if(!Calendar_obj2||d!=0){
+ if(d>0){Calendar_obj.value=y+'-'+m+'-'+d;}
+ else{
+  var objEvent=divCalendar.event||arguments.callee.caller.arguments[0];
+  var srcElement=objEvent.srcElement;
+  if(!srcElement){srcElement=objEvent.target;}
+  Calendar_obj.value=y+'-'+m+'-'+srcElement.innerHTML;
+ }
+}
+else{
+ if(IsLeapYear(y) && m==2){num=MonthDNum[m]+1;}
+ else{num=MonthDNum[m];}
+ Calendar_obj.value=y+'-'+m+'-1';
+ Calendar_obj2.value=y+'-'+m+'-'+num;
+}
+Calendar_hide();}
+
+function Calendar_hide()
+{document.getElementById("divCalendar").style.display="none";}
+//document.onclick=Calendar_hide;

@@ -1,0 +1,63 @@
+$(function() {
+	if($(window).scrollTop() == 0) {
+		$(".returnTop").css("opacity", "0");
+	} else {
+		$(".returnTop").css("opacity", "1");
+	}
+	$(window.document).scroll(function() {
+		if($(window).scrollTop() == 0) {
+			$(".returnTop").css("opacity", "0");
+		} else {
+			$(".returnTop").css("opacity", "1");
+
+		}
+
+	});
+	$(".returnTop").click(function() {
+		$("html,body").animate({
+			scrollTop: 0
+		}, 500);
+	});
+	$(".returnTop").hover(function() {
+		$(this).css("background-position", "-100px 0px");
+		$(this).text("返回顶部");
+	}, function() {
+		$(this).css("background-position", "-42px center");
+		$(this).text(" ");
+	})
+	
+	$(".in_case_main_t ul li").hover(function(){
+		var case_id=$(this).attr("data-id");
+		$(this).addClass("active").siblings().removeClass("active");
+		$("#"+case_id).addClass("active").siblings().removeClass("active");
+	})
+	$(".in_news_t ul li").hover(function(){
+		var news_id=$(this).attr("data-id");
+		$(this).addClass("active").siblings().removeClass("active");
+		$("#"+news_id).addClass("active").siblings().removeClass("active");
+	})
+	
+	$(".list_product_t ul li").hover(function(){
+		$(this).addClass("active").siblings().removeClass("active");
+		var pro_id=$(this).find("a").attr("data-id");
+		$("#"+pro_id).addClass("active").siblings().removeClass("active");
+	})
+	
+	$(".case_list_t ul li").hover(function(){
+		$(this).addClass("active").siblings().removeClass("active");
+		var cases_id=$(this).find("a").attr("data-id");
+		$("#"+cases_id).addClass("active").siblings().removeClass("active");
+	})
+	
+	$(".news_list_t ul li").hover(function(){
+		$(this).addClass("active").siblings().removeClass("active");
+		var new_id=$(this).find("a").attr("data-id");
+		$("#"+new_id).addClass("active").siblings().removeClass("active");
+	})
+	$(".wzjs_list ul li").hover(function(){;
+		$(this).addClass("active").siblings().removeClass("active");
+	})
+	var str_a=$(".conten_info").find("a");
+	var str_s=str_a.parent().css("font-size");
+	str_a.css("font-size",str_s);
+})

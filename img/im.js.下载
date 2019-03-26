@@ -1,0 +1,60 @@
+
+var __oran_top_offset = -260;
+function __oran_kf_get(elmId) { return document.getElementById(elmId); }
+
+function __oran_kf_setKf(valtype, writeCookie) {
+    if (valtype == 0) {
+        __oran_kf_get("bodd").style.display = "none";
+        __oran_kf_get("kefubtn").style.display = "";
+        if (writeCookie)
+            __oran_kf_setCookie("kefutype", 0);
+    } else {
+        __oran_kf_get("bodd").style.display = "";
+        __oran_kf_get("kefubtn").style.display = "none";
+        if (writeCookie)
+            __oran_kf_setCookie("kefutype", 1);
+    }
+}
+function __oran_kf_getPosition() {
+    var top = 0;
+    if (document.documentElement && document.documentElement.scrollTop) {
+        top = document.documentElement.scrollTop;
+    }
+    else if (document.body && document.body.scrollTop) {
+        top = document.body.scrollTop;
+    }
+    var left = document.documentElement.scrollLeft;
+    var height = document.documentElement.clientHeight;
+    var width = document.documentElement.clientWidth;
+    return { top: top, left: left, height: height, width: width };
+}
+function __oran_kf_setPostion(objID) {
+    var obj = __oran_kf_get(objID);
+    window.onscroll = function () {
+
+        var Position = __oran_kf_getPosition();
+        if (document.all) {
+            if (navigator.userAgent.indexOf("MSIE 6.0") > 0) {
+                obj.style.top = (Position.top) + __oran_top_offset + "px";
+            }
+
+        }
+        obj.style.right = 0;
+    };
+    var show = true;
+    var cookeVal = __oran_kf_getCookie("kefutype");
+    if (cookeVal == null || cookeVal == "0") show = false;
+    __oran_kf_setKf(show ? 1 : 0, true);
+}
+function __oran_kf_setCookie(name, value) {
+    var Days = 1;
+    var exp = new Date();
+    exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 10000);
+    document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString() + ";path=/";
+}
+function __oran_kf_getCookie(name) {
+    var arr;
+    var rgx = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+    if (arr = document.cookie.match(rgx)) return unescape(arr[2]);
+    else return null;
+}
