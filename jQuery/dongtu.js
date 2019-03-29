@@ -38,7 +38,6 @@ $(window).scroll(function(){
 	if(height1>649 && height1<1298){
 		$(".fade1").fadeIn(2500);
 	}
-	console.log(height1);
 })
 //一键建站
 $(window).scroll(function(){
@@ -46,16 +45,13 @@ $(window).scroll(function(){
 	if(height2>1298 && height2<1947){
 		$(".fade2").fadeIn(2500);
 	}
-	console.log(height2);
 })
 //千套成品
-
 $(window).scroll(function(){
 	var height3 = $(this).scrollTop();
 	if(height3>1947 && height3<2596){
 		$(".fade3").fadeIn(2500);
 	}
-	console.log(height3);
 })
 //百度气球 
 $(window).scroll(function(){
