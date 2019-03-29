@@ -30,10 +30,17 @@
         margin-top: -60px;
         z-index: -100;
     }
-    .huanyuan{
-        position: fixed; top: 597px; z-index: 200; background: #071e4a; width: 100%; margin-left: -110px;
-    }
+    
 }
+
+.huanyuan{
+        position: fixed; 
+        width:100%; 
+        top: 597px; 
+        z-index: 500; 
+        background: #071e4a; 
+        width: 100%; 
+    }
 @media screen and (max-width:500px){
            .huanyuan{
            position: fixed; left: 110px;
@@ -180,7 +187,7 @@
     margin-top: -5px;
     position: relative;
     .fade4{
-        margin-top: 470px;
+        margin-top: 440px;
         display: none;
     }
     .baidu1{
@@ -242,8 +249,12 @@
     margin-top: -5px;
     position: relative;
     .fade6{
-        margin-top: 310px;
+        margin-top: 350px;
         display: none;
+    }
+    .fade7{
+         margin-top: 250px;
+         display: none;
     }
      .Last1{
         color: white; 
@@ -263,3 +274,21 @@
         z-index: -100;
     }
     }
+    
+//  箭头抖动
+#gunlun{
+//  position: fixed;
+    animation: down 0.5s ease-in-out 1s infinite alternate;
+}
+@keyframes down{
+    from{
+        transform: translate(0,0)
+        }
+    to{
+        transform: translate(0,6px)
+    }
+}
+
+
+//  滚轮事件
+
